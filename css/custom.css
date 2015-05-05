@@ -36,7 +36,7 @@ h6, .h6 {
  */
 
 .blog-masthead {
-  background-color: #428bca;
+  background-color: #777bb4;
   -webkit-box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
           box-shadow: inset 0 -2px 5px rgba(0,0,0,.1);
 }
@@ -163,4 +163,26 @@ h6, .h6 {
 }
 .blog-footer p:last-child {
   margin-bottom: 0;
+}
+
+/*
+ * Custom classes
+ */
+.logo{
+	float:left;
+}
+
+.readmore{
+	display:block;
+	text-align:center;
+	padding:5px;
+	background:#f4f4f4;
+	margin-top:10px;
+	color:#666;
+}
+
+.readmore:hover{
+	background:#ccc;
+	color:#666;
+	text-decoration:none;
 }

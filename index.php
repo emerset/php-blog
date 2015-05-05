@@ -1,4 +1,11 @@
+<?php include 'config/config.php';?>
+<?php include 'libraries/Database.php' ?>
 <?php include 'includes/header.php' ?>
+<?php 
+	// Create DB Object
+	$db = new Database();
+?>
+
 		  <div class="blog-post">
             <h2 class="blog-post-title">International PHP Conference 2015</h2>
             <p class="blog-post-meta">January 1, 2015 by <a href="#">Mark</a></p>

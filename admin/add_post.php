@@ -2,12 +2,32 @@
 		$addpost = ' active';
 		$addcategory = ''; ?>
 <?php include 'includes/header.php'; ?>
-
+<?php $db = new Database(); ?>
+<?php 
+	if (isset($_POST['submit'])) {
+		// Assign vars
+		$category = mysqli_real_escape_string($db->link, $_POST['category']);
+		$title = mysqli_real_escape_string($db->link, $_POST['title']);
+		$body = mysqli_real_escape_string($db->link, $_POST['body']);
+		$author = mysqli_real_escape_string($db->link, $_POST['author']);
+		$tags = mysqli_real_escape_string($db->link, $_POST['tags']);
+		
+		// Simple validation
+		if ($title == '' || $body == '' || $category == '' || $author == '' ) {
+			// Set error
+			$error = 'Please fill out all required fields';
+		} else {
+			$query = "INSERT INTO posts(category, title, body, author, tags)
+				VALUES ($category, '$title', '$body', '$author', '$tags')";
+			
+			$insert_row = $db->insert($query);
+		}
+	}
+?>
 <?php 
 /*
  * Pull category table
  */
-$db = new Database();
 $query = "SELECT * FROM categories";
 $categories = $db->select($query);
 ?>
@@ -25,7 +45,7 @@ $categories = $db->select($query);
     <label>Category</label>
     <select name="category" class="form-control">
     	<?php while ($category = $categories->fetch_assoc()) : ?>
-  		<option><?php echo $category['name'] ?></option>
+  		<option value="<?php echo $category['id'] ?>"><?php echo $category['name'] ?></option>
   		<?php endwhile; ?>
 	</select>
   </div>

@@ -35,3 +35,6 @@
 	</div>
       <div class="row">
         <div class="col-sm-12 blog-main">
+        <?php if (isset($_GET['msg'])) {
+        	echo '<div class="alert alert-success">' . htmlentities($_GET['msg']) . '</div>';
+        }?>

@@ -9,12 +9,12 @@
 		$category = (int) $_GET['category'];
 		
 		// Create Posts Query
-		$query = "SELECT * FROM `posts` WHERE `category` = $category";
+		$query = "SELECT * FROM `posts` WHERE `category` = $category ORDER BY id DESC";
 		// Run Query
 		$posts = $db->select($query);
 	} else {
 		// Create Posts Query
-		$query = "SELECT * FROM `posts`";
+		$query = "SELECT * FROM `posts` ORDER BY id DESC";
 		// Run Query
 		$posts = $db->select($query);
 	}

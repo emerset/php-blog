@@ -2,12 +2,46 @@
 		$addpost = '';
 		$addcategory = ''; ?>
 <?php include 'includes/header.php'; ?>
+<?php $db = new Database(); ?>
+<?php 
+	if (isset($_POST['update'])) {
+		// Assign vars
+		$id = mysqli_real_escape_string($db->link, $_POST['id']);
+		$category = mysqli_real_escape_string($db->link, $_POST['category']);
+		$title = mysqli_real_escape_string($db->link, $_POST['title']);
+		$body = mysqli_real_escape_string($db->link, $_POST['body']);
+		$author = mysqli_real_escape_string($db->link, $_POST['author']);
+		$tags = mysqli_real_escape_string($db->link, $_POST['tags']);
+		
+		// Simple validation
+		if ($title == '' || $body == '' || $category == '' || $author == '' ) {
+			// Set error
+			$error = 'Please fill out all required fields';
+		} else {
+			$query = "UPDATE posts
+				SET category = $category,
+					title = '$title',
+					body = '$body',
+					author = '$author',
+					tags = '$tags'
+				WHERE posts.id = $id;";
+			
+			$update_row = $db->update($query);
+		}
+	}
+?>
+<?php 
+	if (isset($_POST['delete'])) {
+		$id = mysqli_real_escape_string($db->link, $_POST['id']);		
+		$query = "DELETE FROM `posts` WHERE id=$id";
+		$delete_row = $db->delete($query);
+	}
+?>
 <?php 
 /*
  * Pull post info
  */
 $id = (int) $_GET['id'];
-$db = new Database();
 $query = "SELECT * FROM `posts` WHERE id = $id";
 $post = $db->select($query)->fetch_assoc();
 
@@ -19,6 +53,9 @@ $categories = $db->select($query);
 ?>
 
 <form method="post" action="edit_post.php">
+
+  <input name="id" type="hidden" value="<?php echo $id ?>" />
+
   <div class="form-group">
     <label>Post Title</label>
     <input name="title" type="text" class="form-control" value="<?php echo $post['title'] ?>" />
@@ -33,7 +70,11 @@ $categories = $db->select($query);
     <label>Category</label>
     <select name="category" class="form-control">
     	<?php while ($category = $categories->fetch_assoc()) : ?>
-  		<option <?php if ($category['id'] == $post['category']) echo 'selected '; ?>value="<?php echo $category['id']?>"><?php echo $category['name']?></option>
+  		<option 
+  			<?php if ($category['id'] == $post['category']) echo 'selected '; ?>
+  			value="<?php echo $category['id'] ?>">
+  			<?php echo $category['name'] ?>
+  		</option>
   		<?php endwhile; ?>
 	</select>
   </div>
@@ -49,7 +90,7 @@ $categories = $db->select($query);
   </div>
 
   <div>
-  <input name="submit" type="submit" class="btn btn-default" value="Submit" />
+  <input name="update" type="submit" class="btn btn-default" value="Update" />
   <a href="index.php" class="btn btn-default">Cancel</a>
   <input name="delete" type="submit" class="btn btn-danger" value="Delete" />
   </div>

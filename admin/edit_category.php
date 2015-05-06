@@ -3,10 +3,20 @@
 		$addcategory = ''; ?>
 <?php include 'includes/header.php'; ?>
 
+<?php 
+/*
+ * Pull Category
+ */
+$id = (int) $_GET['id'];
+$db = new Database();
+$query = "SELECT * FROM `categories` WHERE id = $id";
+$category = $db->select($query)->fetch_assoc();
+?>
+
 <form method="post" action="edit_category.php">
   <div class="form-group">
-    <label for="exampleInputEmail1">Category Name</label>
-    <input type="text" name="name" class="form-control" placeholder="Enter Category">
+    <label>Category Name</label>
+    <input type="text" name="name" class="form-control" value="<?php echo $category['name'] ?>" />
   </div>
   <div>
   <input name="submit" type="submit" class="btn btn-default" value="Submit" />
